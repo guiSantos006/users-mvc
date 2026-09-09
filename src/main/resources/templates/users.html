@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Gerenciamento de Usuários</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 30px; }
+        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f4f4f4; }
+        .card { background: #f9f9f9; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+        input { margin-bottom: 10px; padding: 6px; width: 250px; display: block; }
+        button { padding: 8px 15px; cursor: pointer; }
+        .btn-danger { background-color: #dc3545; color: white; border: none; border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+<h1>Gestão de Usuários (Thymeleaf Demo)</h1>
+
+<!-- Formulário de Criação -->
+<div class="card">
+    <h3>Novo Usuário</h3>
+    <form th:action="@{/users}" th:object="${newUser}" method="post">
+        <label>Nome:</label>
+        <input type="text" th:field="*{username}" placeholder="Nome de usuário" required />
+
+        <label>Email:</label>
+        <input type="email" th:field="*{email}" placeholder="Email" required />
+
+        <label>Senha:</label>
+        <input type="password" th:field="*{password}" placeholder="Senha" required />
+
+        <button type="submit">Cadastrar Usuário</button>
+    </form>
+</div>
+
+<!-- Tabela de Listagem -->
+<h3>Usuários Cadastrados</h3>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Email</th>
+        <th>Criado Em</th>
+        <th>Ações</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Itera sobre a lista de usuários vinda do Model -->
+    <tr th:each="user : ${users}">
+        <td th:text="${user.userId}">UUID</td>
+        <td th:text="${user.username}">Nome</td>
+        <td th:text="${user.email}">Email</td>
+        <td th:text="${user.createdAt}">Data</td>
+        <td>
+            <form th:action="@{/users/delete/{id}(id=${user.userId})}" method="post" style="display:inline;">
+                <button type="submit" class="btn-danger" onclick="return confirm('Deseja realmente excluir?')">Excluir</button>
+            </form>
+        </td>
+    </tr>
+    <tr th:if="${#lists.isEmpty(users)}">
+        <td colspan="5" style="text-align: center;">Nenhum usuário cadastrado.</td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
