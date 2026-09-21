@@ -1,4 +1,20 @@
 package br.com.gui.usersmvc.controller;
 
-public record CreateUserDto(String username, String email, String password) {
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
+public record CreateUserDto(
+        @NotBlank(message = "Username is required")
+        @Size(min = 3, max = 50)
+        String username,
+
+        @NotBlank(message = "Email is required")
+        @Email
+        String email,
+
+        @NotBlank(message = "Password is required")
+        @Size(min = 6)
+        String password
+) {
 }

@@ -2,7 +2,9 @@ package br.com.gui.usersmvc.controller;
 
 import br.com.gui.usersmvc.entity.User;
 import br.com.gui.usersmvc.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.net.URI;
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/v1/users")
 public class UserController {
@@ -26,7 +29,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody CreateUserDto createUserDto){
+    public ResponseEntity<User> createUser(@Valid @RequestBody CreateUserDto createUserDto){
         var userId = userService.createUser(createUserDto);
 
         return ResponseEntity.created(URI.create("/v1/users/" + userId.toString())).build();
